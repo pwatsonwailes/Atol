@@ -1,0 +1,713 @@
+/*
+ * OpenS DAWS - Open Source Digital Application Wireframing Styleshee* Version 4.1
+ * Collated by Pete Wailes - pete@strategyinternetmarketing.co.uk / pete@wail.es / @petewailes
+ *
+ * Includes elements from &| inspired by:
+ * 
+ * * normalize.css by Nicolas Gallagher and Jonathan Neal - http://necolas.github.com/normalize.css/
+ * * Foundation by Zurb - http://foundation.zurb.com/
+ * * FramelessGrid by Joni Korpi - http://framelessgrid.com/
+ * * Baseline CSS by Stéphane Curzi - http://baselinecss.com/
+*/
+
+/*
+Common Mixins
+*/
+
+@import "lesshat.less";
+
+/* Boot up LessHat */
+
+@w3c: true; // Unprefixed W3C syntax 
+@webkit: true; // Chrome 7+, Safari 5+, iOS5, Android 
+@moz: true; //  Firefox 4+ 
+@opera: true; // Opera 10.5+ 
+@ms: true;  // IE 10+ 
+@oldWebkit: true; // iOS4, Safari 4, Chrome < 6.
+
+@font-size: 16; 			// Base font-size (pixels)
+@line-height: 26; 			// Base font-size (pixels)
+@font-line-ratio: 1.6;		// Ratio of line height to font size
+
+@em: @font-size*1em;		// Shorthand for outputting ems, e.g. "14/@em"
+
+@radius: 5px;				// Default radius for borders
+
+@gutter: @line-height;		// Gutter-width of your grid (pixels)
+@column: 42;				// Column-width of your grid (pixels) -- gutter * 1.61803399 rounded up
+@column-and-gutter: @column + @gutter;
+
+
+/*
+Grid rules & column-widths in variables, in ems
+*/
+
+.row () { 
+	margin: 0 auto;
+	max-width: 100%;
+	*zoom: 1;
+	/* Nicolas Gallagher's micro clearfix */
+	&:before, &:after { content: ""; display: table; }
+	&:after { clear: both; }
+}
+
+.row .row {
+	max-width: none;
+	min-width: 0;
+	width: auto;
+}
+.row .row.collapse { margin: 0; }
+
+.col () {
+	float: left;
+	min-height: 1px;
+	position: relative;
+}
+
+.gutter () { margin-left: @gutter * 1px; }
+
+ @1cols: ( 1 * @column-and-gutter - @gutter) / @em; @1col: @1cols;
+ @2cols: ( 2 * @column-and-gutter - @gutter) / @em;
+ @3cols: ( 3 * @column-and-gutter - @gutter) / @em;
+ @4cols: ( 4 * @column-and-gutter - @gutter) / @em;
+ @5cols: ( 5 * @column-and-gutter - @gutter) / @em;
+ @6cols: ( 6 * @column-and-gutter - @gutter) / @em;
+ @7cols: ( 7 * @column-and-gutter - @gutter) / @em;
+ @8cols: ( 8 * @column-and-gutter - @gutter) / @em;
+ @9cols: ( 9 * @column-and-gutter - @gutter) / @em;
+@10cols: (10 * @column-and-gutter - @gutter) / @em;
+@11cols: (11 * @column-and-gutter - @gutter) / @em;
+@12cols: (12 * @column-and-gutter - @gutter) / @em;
+@13cols: (13 * @column-and-gutter - @gutter) / @em;
+@14cols: (14 * @column-and-gutter - @gutter) / @em;
+@15cols: (15 * @column-and-gutter - @gutter) / @em;
+@16cols: (16 * @column-and-gutter - @gutter) / @em;
+@16cols: (17 * @column-and-gutter - @gutter) / @em;
+@16cols: (18 * @column-and-gutter - @gutter) / @em;
+
+
+// Column-widths in a function, in ems
+.width (@cols: 1) {
+	width: (@cols * @column-and-gutter - @gutter) / @em;
+}
+
+.width-mod (@cols: 1, @decrease: 0, @increase: 0) {
+	width: (@cols * @column-and-gutter - @decrease + @increase) / @em;
+}
+
+.push (@cols: 1) {
+	margin-left: (@cols * @column-and-gutter - @gutter) / @em;
+}
+
+.clear { clear: both; }
+
+
+/*
+Resets & normalisation
+*/
+
+html, body, div, span, a, img, h1, h2, h3, h4, h5, h6, 
+hgroup, p, dl, dialog, dt, dd, ol, ul, li, abbr, acronym, 
+address, b, big, blockquote, cite, code, 
+del, dfn, em, i, ins, kbd, pre, q, samp, tt, var, 
+small, strong, sub, sup, object, iframe, 
+form, fieldset, label, legend, table, caption, 
+tbody, tfoot, thead, tr, th, td, 
+article, aside, footer, header, nav, section, 
+figure, menu, time, mark, audio, video {
+	background: transparent;
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-weight: inherit;
+	font-style: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	text-align: left;
+	vertical-align: baseline;
+	white-space: normal;
+}
+
+article, aside, footer, header, nav, section, dialog, figure, hgroup, menu { 
+	display: block;
+}
+
+* {	.box-sizing(border-box); }
+
+/* Deprecated and obsolete elements */
+applet, basefont, dir, font, isindex, menu, s, strike, u {
+	border: 0;
+	color: inherit;
+	font-family: inherit;
+	font-size: 100%;
+	font-weight: normal;
+	font-style: normal;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	text-decoration: inherit;
+	text-align: left;
+	vertical-align: baseline;
+	white-space: normal;
+}
+
+dir, menu { list-style: none; }
+nobr { white-space: normal; }
+blink { text-decoration: none; }
+marquee { overflow: visible; }
+
+html { // Prevent iOS text size adjust after orientation change, without disabling user zoom
+	font-family: sans-serif;
+	height: 100%;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+body {
+	background: white;
+	color: #313131;
+	font-size: 100%;
+	line-height: 1.5;
+	min-height: 100%;
+	-webkit-tap-highlight-color: rgba(255,0,0, 0.62);
+}
+
+
+cite, dfn, em, i { font-style: italic; }
+
+mark { background: rgba(255, 255, 0, 0.4); padding: 0 .25em; }
+
+article, aside, details, figcaption, header, hgroup, nav, figure, section, footer { display: block; } /* Correct 'block' display not defined in IE 8/9 */
+
+audio, canvas, video { display: inline-block; } /* Correct 'inline-block' display not defined in IE 8/9 */
+	audio:not([controls]) {
+		display: none;
+		height: 0;
+	}
+
+/* For debugging */
+.test { background: #edd; }
+
+
+/*
+Typography
+*/
+
+/* Headings */
+h1 { // 60px / 72px
+	margin: 0;
+	font-size: 3.75em;
+	line-height: 1.2em;
+	margin-bottom: 0.4em
+}
+
+h2 { // 48px / 48px
+	margin: 0;
+	font-size: 3em;
+	line-height: 1em;
+	margin-bottom: 0.5em
+}
+
+h3 { // 36px / 48px 
+	margin: 0;
+	font-size: 2.25em;
+	line-height: 1.3333333333333333333333333333333em;
+	margin-bottom: 0.6667em
+}
+
+h4 { // 24px / 24px
+	margin: 0;
+	font-size: 1.5em;
+	line-height: 1em;
+	margin-bottom: 1em
+}
+
+h5 { // 21px / 24px
+	margin: 0;
+	font-size: 1.3125em;
+	line-height: 1.1428571428571428571428571428571em;
+	margin-bottom: 1.1428571428571428571428571428571em
+}
+
+h6 { // 18px / 24px
+	margin: 0;
+	font-size: 1.125em;
+	line-height: 1.3333333333333333333333333333333em;
+	margin-bottom: 1.3333333333333333333333333333333em
+}
+
+h1:first-child, h2:first-child, h3:first-child, h4:first-child { margin-top: 0; }
+
+/* Common */
+p, ul, ol, dl, dialog, blockquote, pre, td, th, label { // 16px / 24px
+	margin: 0;
+	font-size: 1em;
+	line-height: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+small, p.small { // 14px / 24px
+	font-size: 80%;
+	line-height: 1.2;
+	margin: 0;
+}
+
+a {
+	color: #05e;
+	text-decoration: none;
+	&:hover { text-decoration: underline }
+	&:focus { outline: thin dotted } /* Fix outline inconsistency between Chrome and other browsers */
+	&:hover, &:active { outline: none } /* Better outline suppression */
+}
+
+a img, img {
+	-ms-interpolation-mode: bicubic;
+	border: 0;
+	text-decoration: none;
+}
+
+hr {
+	margin: 0 0 1.375em;
+	padding: 0;
+}
+
+/* Addresses styles set to 'bolder' in Firefox 4+, Safari 5, and Chrome, enforces defaults for other browsers */
+b, strong, caption, th, thead, dt, legend { font-weight: bold; }
+
+/* Addresses styling not present in Safari 5 and Chrome, enforces defaults for other browsers */
+dfn, em, i { font-style: italic }
+var, address { font-style: normal }
+
+/* Code */
+p code, p pre, p var { line-height: @font-line-ratio*0.75; }
+
+pre { // Allow line wrapping of 'pre'
+	white-space: pre;
+	white-space: pre-wrap;
+	word-wrap: break-word
+}
+
+/* Lists */
+ol, ul, dl, dialog {
+	list-style: none;
+	list-style-position: inside;
+	margin-left: 1.5em;
+	padding: 0
+}
+
+ul { list-style: disc outside; }
+ol { list-style: decimal outside; }
+
+li {
+	font-size: 1em;
+	line-height: @font-line-ratio - 2;
+	ul, ol { margin: 0 1.5em }
+	ul { list-style-type: circle; }
+	ol { list-style-type: lower-alpha; }
+	label { margin-bottom: 0 }
+}
+
+dl dd { margin-left: 1.5em }
+
+nav ul li { margin-left: 0; }
+
+nav ul, .inline { 
+	list-style-type: none;
+	margin-left: 0;
+	overflow: hidden;
+	padding: 0;
+}
+
+.inline li { 
+	display: block;
+	float: left;
+	list-style: none;
+	margin-left: 1em;
+	&:first-child { margin-left: 0; }
+}
+
+.unstyledList {
+	list-style-type: none;
+	margin-left: 0;
+	overflow: hidden;
+	padding: 0;
+	li { 
+		display: block;
+		list-style: none;
+	}
+}
+
+/* Quotes */
+blockquote, cite, q { // Sets consistent quote types
+	font-style: italic
+	quotes: none;
+}
+
+blockquote:before, blockquote:after, 
+q:before, q:after {
+	content: '';
+	content: none
+}
+
+blockquote {
+	border-left: 3px solid #dfdfdf;
+	padding-left: 1.5em;
+}
+	blockquote > p { padding: 0 }
+
+/* Abbreviations */
+abbr, acronym, dfn {
+	font-size: 80%;
+	letter-spacing: .1em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+abbr[title], acronym[title], dfn[title] { // Addresses styling not present in IE 8/9, Safari 5, and Chrome
+	border-bottom: 1px dotted black;
+	cursor: help;
+}
+
+/* Marks, inserts & deletes */
+ins, mark { text-decoration: none }
+ins { color: #f00; }
+del { text-decoration: line-through }
+mark { // Addresses styling not present in IE 8/9
+	background: #c47529;
+	color: #000
+}
+
+sub, sup { // Position 'sub' and 'sup' without affecting line-height
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline
+}
+
+sup { top: -0.7em } /* Move superscripted text up */
+sub { bottom: -0.25em } /* Move subscripted text down */
+
+/* Media */
+img, object, embed, video { // Fluid images
+	max-width: 100%;
+	_width: 100%
+} 
+
+img { // Improve IE's resizing of images
+	border: 0;
+	-ms-interpolation-mode: bicubic;
+	&::selection { background: transparent; }
+	&::-moz-selection { background: transparent; }
+}
+
+figure { margin: 0 }
+svg:not(:root) { overflow: hidden } /* Correct IE9 overflow */
+
+::-moz-selection,
+::selection { // selected text
+	background: #c47529;
+	color: #fff;
+	text-shadow: none
+}
+
+
+/* 
+ * Tables
+*/
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-bottom: 1.5em
+}
+
+th, td {
+	padding: 0.75em;
+	text-align: left;
+}
+
+tr {
+	border-top: 1px solid #dfdfdf;
+	padding: 0.75em 0;
+	td:first-child { padding-left: 0; }
+	td:last-child { padding-right: 0; }
+}
+
+tfoot tr td { font-style: italic }
+
+
+/*
+Forms
+*/
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea {
+	border: 1px solid rgba(0,0,0,0.4);
+	color: rgba(0, 0, 0, 0.8);
+	display: block;
+	font-size: inherit;
+	height: 1.5em;
+	text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+	width: 100%;
+	.border-radius(2px);
+	.box-shadow(~"0, 1px, 2px, rgba(0, 0, 0, 0.1)");
+	.transition(all, 0.15s, linear);
+}
+
+button, input, select, textarea { // IE7 and older
+	font-family: inherit;
+	font-size: 100%;
+	line-height: normal;
+	margin: 0;
+	padding: 1px 0.25em;
+	vertical-align: baseline;
+	*vertical-align: middle
+}
+
+button, input {
+	line-height: normal;
+	*overflow: visible;
+	&::-moz-focus-inner { // Remove inner padding and border in Firefox 4+
+		border: 0;
+		padding: 0
+	}
+}
+
+form { 
+	margin: 0;
+	margin-bottom: 1.5em;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+fieldset {
+	border: 0;
+	padding: 0
+}
+
+legend {
+	*margin-left: -.75em;
+}
+
+input { margin: 0; }
+
+label {
+	display: block;
+	width: 100%;
+}
+
+select {
+	display: block;
+	margin: 0;
+	padding: 0.04em;
+}
+
+textarea {
+	height: auto;
+	min-height: 6em;
+	width: 99%;
+}
+
+input[type="submit"],
+input[type="reset"],
+html input[type="button"],
+button, a.button {
+	border: 1px solid rgba(0,0,0,0.4);
+	background: #f3f3f3 url(images/overlay.png) repeat-x 0 0;
+	color: rgba(0, 0, 0, 0.8);
+	cursor: pointer;
+	line-height: 1.23;
+	margin-bottom: 1.5em;
+	-webkit-appearance: button;
+	.box-shadow(~"0px 0px 1px #8c8c8c");
+}
+
+// 800 and up
+@media screen and (min-width: 50em) {
+	input[type="submit"],
+	input[type="reset"],
+	html input[type="button"],
+	button, a.button {
+		line-height: 1.278;
+	}
+}
+
+input[type="checkbox"],
+input[type="radio"] { // Remove excess padding in IE 8/9
+	padding: 0;
+}
+
+input[type="search"] { // Fixes appearance being set to searchfield
+	-webkit-appearance: textfield;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	&::-webkit-search-cancel-button,
+	&::-webkit-search-decoration { // Remove inner padding and search cancel button in Safari 5 and Chrome on OS X.
+		-webkit-appearance: none
+	}
+}
+
+input[type="file"] { width: 100%; }
+
+/* 
+Addresses styling for 'hidden' attribute not present in IE 8/9
+Re-set default cursor for disabled elements
+*/
+[hidden] { display: none; }
+[disabled] { cursor: default; }
+
+:focus { outline: 0; }
+
+button.round1, input[type="submit"].round1, a.round1.button 	{ .border-radius(3px); }
+button.round2, input[type="submit"].round2, a.round2.button 	{ .border-radius(50%); }
+
+button.pink, input[type="submit"].pink, a.button.pink 			{ background-color: #d69acd; .box-shadow(~"1px 1px 1px #b980b0);") }
+button.red, input[type="submit"].red, a.button.red 				{ background-color: #cf5e5e; .box-shadow(~"1px 1px 1px #af4c4c);"); color: #fff; }
+button.orange, input[type="submit"].orange, a.button.orange 	{ background-color: #f27327; .box-shadow(~"1px 1px 1px #cc601f);") }
+button.yellow, input[type="submit"].yellow, a.button.yellow 	{ background-color: #e1bd14; .box-shadow(~"1px 1px 1px #c3a515);") }
+button.green, input[type="submit"].green, a.button.green 		{ background-color: #84b66b; .box-shadow(~"1px 1px 1px #64914d);") }
+button.aqua, input[type="submit"].aqua, a.button.aqua 			{ background-color: #6cb6a5; .box-shadow(~"1px 1px 1px #5e9d8f);") }
+button.blue, input[type="submit"].blue, a.button.blue 			{ background-color: #7aabca; .box-shadow(~"1px 1px 1px #52768c);") }
+button.navy, input[type="submit"].navy, a.button.navy 			{ background-color: #295f9b; .box-shadow(~"1px, 1px, 1px, #2c5b8f); color: rgba(25,25,2550.9);") }
+button.purple, input[type="submit"].purple, a.button.purple 	{ background-color: #8174c3; .box-shadow(~"1px 1px 1px #6e64a7);") }
+button.brown, input[type="submit"].brown, a.button.brown 		{ background-color: #ae7a53; .box-shadow(~"1px 1px 1px #906443);") }
+button.black, input[type="submit"].black, a.button.black 		{ background-color: #535353; .box-shadow(~"1px, 1px, 1px, #434343); color: rgba(25,25,2550.9);"); color: #fff; }
+button.gray, input[type="submit"].gray, a.button.gray 			{ background-color: #aaaaaa; .box-shadow(~"1px 1px 1px #8c8c8c);") }
+
+
+/*
+Font Stacks
+
+Sans font stacks from http://www.awayback.com/revised-font-stack/
+Other types of font stacks from http://cssfontstack.com/
+*/
+
+.serif 						{ font-family: "Hoefler Text", Garamond, Baskerville, "Baskerville Old Face", "Times New Roman", serif; }
+.sans 						{ font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif; }
+.monospace, 
+code, pre, var, kbd, samp	{ font-family: "Andale Mono", "Courier New", Courier, monospace; }
+.elegant 					{ font-family: Baskerville, Garamond, Palatino, "Palatino Linotype", "Hoefler Text", "Times New Roman", serif; }
+.readable 					{ font-family: "Lucida Grande", geneva, helvetica, sans-serif; }
+
+// Serif
+.baskerville 				{ font-family: Baskerville, "Baskerville old face", "Hoefler Text", Garamond, "Times New Roman", serif; }
+.caslon 					{ font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif; }
+.bodoni 					{ font-family: "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif; }
+.bookAntiqua 				{ font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif; }
+.cambria 					{ font-family: Cambria, Georgia, serif; }
+.constantia 				{ font-family: Constantia, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif; }
+.didot 						{ font-family: Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif; }
+.garamond 					{ font-family: Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif; }
+.goudy 						{ font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif; }
+.hoefler 					{ font-family: "Hoefler Text", "Baskerville old face", Garamond, "Times New Roman", serif; }
+.lucidiaSerif				{ font-family: "Lucida Bright", Georgia, serif; }
+.palantino 					{ font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif; }
+
+// Sans
+.calibri, 
+p, ul, ol, dialog, 
+dl, a, table, blockquote, 
+form, fieldset, address,
+h4, h5, h6 					{ font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif; }
+.franklin 					{ font-family: "Franklin Gothic Medium", Arial, sans-serif; }
+.futura 					{ font-family: Futura, "Trebuchet MS", Arial, sans-serif; }
+.geneva 					{ font-family: Geneva, Tahoma, Verdana, sans-serif; }
+.gill 						{ font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif; }
+.helvetica					{ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.lucidiaSans 				{ font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif; }
+.optima 					{ font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif; }
+.segoe 						{ font-family: Segoe, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+.tahoma 					{ font-family: Tahoma, Geneva, Verdana, sans-serif; }
+.trebuchet 					{ font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif; }
+.verdana 					{ font-family: Verdana, Geneva, sans-serif; }
+
+// Other
+.avant 						{ font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif; }
+.brush 						{ font-family: "Brush Script MT", cursive; }
+.copperplate 				{ font-family: Copperplate, "Copperplate Gothic Light", fantasy; }
+.impact 					{ font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif; }
+.papyrus 					{ font-family: Papyrus, fantasy; }
+.rockwell					{ font-family: Rockwell, "Courier Bold", Courier, Georgia, Times, "Times New Roman", serif; }
+
+
+/*
+Boxes
+*/
+.boxSettings (@background, @borderWidth: 1px, @borderType: solid, @borderColour, @color) {
+	background: @background;
+	border: @borderWidth @borderType @borderColour;
+	color: @color;
+}
+
+.download-box, .info-box, .note-box, .warning-box {
+	clear: both;
+	line-height: 1.5em;
+	margin: 1em 0px;
+	padding: 1em;
+}
+
+.info-box { .boxSettings(#C2DDF9, 1px, solid, #80BBEF, #4783B7); }
+.download-box { .boxSettings(#D1F7B6, 1px, solid, #8BCA61, #5E9537); }
+.warning-box { .boxSettings(#FCC, 1px, solid, #F99, #C31B00); }
+.note-box { .boxSettings(#FDEBAE, 1px, solid, #E6C555, #9E660D); }
+
+/*
+Colours
+*/
+
+.palette-firm { background-color: #1abc9c; }
+.palette-firm-dark { background-color: #16a085; }
+.palette-success { background-color: #2ecc71; }
+.palette-success-dark { background-color: #27ad60; }
+.palette-info { background-color: #3498db; }
+.palette-info-dark { background-color: #2383c4; }
+.palette-warning { background-color: #f1c40f; }
+.palette-warning-dark { background-color: #cea70c; }
+.palette-danger { background-color: #e74c3c; }
+.palette-danger-dark { background-color: #dc2d1b; }
+.palette-night { background-color: #34495e; }
+.palette-night-dark { background-color: #2c3e50; }
+.palette-bright { background-color: #f1c40f; }
+.palette-bright-dark { background-color: #cea70c; }
+.palette-success-dark { background-color: #27ae60; }
+.palette-info-dark { background-color: #2980b9; }
+.palette-bright-dark { background-color: #f39c12; }
+.palette-amethyst { background-color: #9b59b6; }
+.palette-wisteria { background-color: #8e44ad; }
+.palette-carrot { background-color: #e67e22; }
+.palette-pumpkin { background-color: #d35400; }
+.palette-alizarin { background-color: #e74c3c; }
+.palette-pomegranate { background-color: #c0392b; }
+.palette-clouds { background-color: #ecf0f1; color: #bdc3c7; }
+.palette-silver { background-color: #bdc3c7; }
+.palette-concrete { background-color: #95a5a6; }
+.palette-asbestos { background-color: #7f8c8d; }
+
+.palette * { color: #fff; opacity: 0.8; }
+
+// import resets and base units
+@import "style.less";
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('fonts/fontawesome-webfont.eot');
+  src: url('fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+    url('fonts/fontawesome-webfont.svg#FontAwesome') format('svg'),
+    url('fonts/fontawesome-webfont.woff') format('woff'),
+    url('fonts/fontawesome-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import "fonts/font-awesome.less";
+@import "fonts/font-awesome-ie7.less";
